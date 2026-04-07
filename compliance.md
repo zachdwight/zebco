@@ -1,5 +1,22 @@
 # HIPAA & Data Compliance Guidelines
 
+⚠️ **CRITICAL DISCLAIMER**
+
+This document provides guidance for HIPAA compliance, but **using this framework does NOT automatically make your organization HIPAA compliant**.
+
+**Your organization remains 100% responsible for:**
+- Obtaining Business Associate Agreements (BAAs) with all vendors/AI providers
+- Implementing and maintaining all security controls
+- Training staff on HIPAA requirements and proper PHI handling
+- Conducting regular compliance audits and risk assessments
+- Maintaining complete audit logs and documentation
+- Following all data retention and secure deletion policies
+- Having HIPAA legal counsel review your specific implementation
+
+**This framework provides tools and guidance to support compliance efforts, but legal and technical compliance is YOUR responsibility.** Consult with HIPAA legal counsel before handling any Protected Health Information (PHI).
+
+---
+
 Healthcare data migrations require strict adherence to privacy and security regulations.
 
 ## HIPAA Compliance (US)

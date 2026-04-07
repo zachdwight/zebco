@@ -4,6 +4,26 @@
 
 ---
 
+## ⚠️ Legal Disclaimer
+
+**HIPAA AWARE ≠ HIPAA COMPLIANT**
+
+This framework is **HIPAA-aware** (provides guidance and tools to support compliance), but **using it does NOT automatically make your organization HIPAA compliant**. Your organization is fully responsible for:
+
+- Obtaining Business Associate Agreements (BAAs) with all vendors
+- Implementing and maintaining all security/encryption controls
+- Training staff on HIPAA and proper PHI handling
+- Conducting regular compliance audits
+- Managing and retaining audit logs
+- Following data retention/deletion policies
+- **Having HIPAA legal counsel review your implementation**
+
+**Consult with legal counsel before handling any Protected Health Information (PHI).**
+
+See [compliance.md](compliance.md) for detailed requirements and responsibilities.
+
+---
+
 ## 🎯 What It Does
 
 Healthcare ELT is an **AI-powered data transformation platform** that automates the complex process of migrating healthcare data between different Electronic Health Record (EHR) systems, practice management systems, and accounting platforms.
@@ -295,12 +315,27 @@ healthcare-elt/
 
 ## 🔐 Security & Compliance
 
-✅ **HIPAA Awareness** — Built-in guidance for PHI handling
+⚠️ **IMPORTANT: HIPAA AWARE ≠ HIPAA COMPLIANT**
+
+This framework is **HIPAA-aware** (provides guidance and tools) but **NOT automatically compliant**. Your organization is responsible for:
+- Obtaining Business Associate Agreements (BAAs)
+- Implementing and managing encryption
+- Configuring access controls and authentication
+- Training staff on HIPAA requirements
+- Conducting regular compliance audits
+- Following data retention/deletion policies
+- Having HIPAA legal counsel review your implementation
+
+See [compliance.md](compliance.md) for detailed requirements and responsibilities.
+
+---
+
+✅ **HIPAA Awareness Features** — Built-in guidance for PHI handling
 ✅ **Audit Trail** — Complete logs of all transformations
 ✅ **Data Validation** — Ensures data integrity throughout
 ✅ **Privacy Controls** — De-identification guidelines included
 ✅ **Encryption Ready** — Supports encryption in transit/at rest
-✅ **Compliance Docs** — See [compliance.md](compliance.md) for details
+✅ **Compliance Guidance** — See [compliance.md](compliance.md) for detailed requirements
 
 ---
 
