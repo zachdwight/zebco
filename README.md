@@ -1,210 +1,468 @@
 # Healthcare ELT Conversion Framework
 
-A structured, AI-powered approach to Extract-Load-Transform healthcare data between different EHR and accounting systems.
+**Transform healthcare data between EHR systems intelligently.** Uses AI to generate transformation code from documentation, validates against healthcare standards, and generates data lineage reports.
 
-## Overview
+---
 
-This project automates healthcare data migrations using AI agents. It reads raw files from source systems, uses Claude/Gemini/local LLMs to generate transformation code, executes the code, validates outputs, and iteratively improves until transformation rules are satisfied.
+## 🎯 What It Does
 
-The framework combines:
-- **Documentation-Driven Design**: Clear expectations, field mappings, schemas
-- **AI Code Generation**: LLMs generate transformation code based on specifications
-- **Iterative Validation**: Runs up to 8 iterations, self-healing on failures
-- **HIPAA Compliance**: Built-in privacy, encryption, and audit trail support
-- **Data Integrity**: Comprehensive validation against healthcare standards
+Healthcare ELT is an **AI-powered data transformation platform** that automates the complex process of migrating healthcare data between different Electronic Health Record (EHR) systems, practice management systems, and accounting platforms.
 
-## Directory Structure
+Instead of manually writing transformation code, you:
+1. **Document** your expectations (field mappings, rules, constraints)
+2. **Upload** raw data files (CSV, Excel, XML, JSON)
+3. **AI generates** transformation code automatically
+4. **System validates** against healthcare standards (ICD, CPT, HIPAA)
+5. **Auto-iterates** on failures, fixing issues intelligently
+6. **Reports** data quality improvements with AI-driven provenance analysis
 
-```
-healthcare-elt/
-├── bronze/                    # 🆕 Raw input files (CSV, Excel, XML)
-│   └── patients.csv
-│
-├── transformations/           # 🆕 AI-powered transformation engine
-│   ├── orchestrator.js        # Main orchestration (AI + iteration)
-│   ├── llm-client.js          # Claude/Gemini/Local LLM interface
-│   ├── converters.js          # CSV/Excel/XML → JSON conversion
-│   ├── validators.js          # Healthcare data validation rules
-│   ├── config.js              # Configuration & defaults
-│   ├── ORCHESTRATOR.md        # How to use the AI orchestrator
-│   ├── parsers/               # Format-specific parsers
-│   │   ├── csv-parser.js
-│   │   ├── excel-parser.js
-│   │   └── xml-parser.js
-│   └── logs/                  # Execution logs
-│
-├── inputs/                    # Example source data
-│   ├── patients/example_1/
-│   └── encounters/example_1/
-│
-├── outputs/                   # Transformed outputs
-│   ├── patients/example_1/
-│   └── encounters/example_1/
-│
-├── field_mappings/            # Field transformation documentation
-│   ├── TEMPLATE_source_to_target.md
-│   └── lookups/               # Code mapping tables
-│
-├── expectations.md            # Transformation rules & success criteria
-├── compliance.md              # HIPAA & privacy guidelines
-├── data_schema.md             # Input/output structure definitions
-├── test_cases.md              # Validation checklist
-├── GETTING_STARTED.md         # Quick start guide
-├── .env.example               # Environment variables template
-└── package.json               # Node.js dependencies
-```
+---
 
-## Quick Start: Web UI (Recommended)
+## ⚡ Quick Start (5 Minutes)
 
 ### 1. Setup
 ```bash
-# Install dependencies
+git clone https://github.com/zachdwight/zebco.git
+cd zebco
 npm install
 
-# Configure API keys
+# Configure AI
 cp .env.example .env
 # Edit .env: Add ANTHROPIC_API_KEY (or GOOGLE_API_KEY for Gemini)
 ```
 
-### 2. Start Web Server
+### 2. Start Web Dashboard
 ```bash
 npm start
-# Server runs on http://localhost:3000
+# Open http://localhost:3000 in your browser
 ```
 
-### 3. Use the Web Dashboard
-1. Open **http://localhost:3000** in your browser
-2. **Upload** a file (CSV, Excel, XML, JSON)
-3. **Select** entity type (Patient, Encounter, etc.) or auto-detect
-4. **Choose** AI model (Claude recommended)
-5. **Set** max iterations (1-10)
-6. Click **Start Transformation**
-7. **Watch** real-time logs and progress
-8. **View** results (transformed data, validation report, output preview)
-9. **Generate** provenance report (AI analysis of data quality & lineage)
+### 3. Transform Data
+1. **Upload** a file (CSV, Excel, XML, JSON)
+2. **Select** entity type or auto-detect
+3. **Choose** AI model (Claude recommended)
+4. **Start** transformation
+5. **View** results & provenance report
 
-**Features**:
-- 📤 Drag-and-drop file upload
-- 🔄 Real-time progress tracking
-- 📋 Live transformation logs (color-coded)
-- ✅ Validation results and metrics
-- 📊 Data quality assessment
-- 📜 AI-generated provenance report
-- 👁️ Output data preview
+---
 
-### Alternative: Command Line
+## ✨ Key Features & Capabilities
 
-For batch processing or automation:
+### 🤖 AI-Powered Code Generation
+- **Claude/Gemini/Local LLMs** generate transformation code automatically
+- **Documentation-driven**: AI reads your expectations, field mappings, and schemas
+- **Context-aware**: Provides examples and validates against healthcare standards
+- **Self-correcting**: Iterates up to 8 times, fixing issues based on validation feedback
 
+### 🏥 Healthcare-Specific
+- **ICD Code Validation** — Validates ICD-9/ICD-10 codes against current code sets
+- **CPT Code Handling** — Validates procedure codes and mappings
+- **Healthcare Data Types** — Specialized handling for dates, phone numbers, provider IDs
+- **HIPAA Compliance** — Built-in privacy controls, audit trails, encryption support
+- **Provider Matching** — Validates provider credentials and NPI numbers
+
+### 🔄 Intelligent Iteration & Self-Healing
+- **Real-time Validation** — Checks output after each transformation attempt
+- **Smart Retries** — AI sees validation errors and automatically fixes them
+  - Example: "Email format invalid" → AI adds email validation to code
+  - Example: "ICD code not found" → AI applies code mapping table
+  - Example: "Phone format wrong" → AI reformats phone numbers
+- **Configurable Attempts** — 1-10 iterations (default: 8)
+- **Audit Trail** — Complete logs of each iteration and fix
+
+### 📊 Data Quality & Provenance
+- **Before/After Metrics** — Analyzes null rates, field types, completeness
+- **Data Lineage** — Shows which source fields → target fields
+- **AI Assessment** — Claude/Gemini analyzes quality improvements and risks
+- **Quality Reports** — Both JSON (machine) and Markdown (human-readable)
+- **Recommendations** — Suggests improvements based on actual data analysis
+
+### 🌐 Web UI Dashboard
+- **Drag-and-drop Upload** — Upload files with ease
+- **Real-time Progress** — Watch transformation steps live
+- **Live Logs** — Color-coded log output (info, success, error, warning)
+- **Results Preview** — See transformed data immediately
+- **One-Click Provenance** — Generate AI analysis with one button
+- **Responsive Design** — Works on desktop, tablet, mobile
+
+### 🛠️ Multiple Input/Output Formats
+- **Input**: CSV, TSV, Excel (.xlsx, .xls), XML, JSON
+- **Auto-Detection**: Detects format and entity type automatically
+- **Standardized Output**: All transforms to clean JSON + validation reports
+- **Metadata**: Includes transformation metadata and audit trails
+
+### 🔧 Flexible & Extensible
+- **Multiple LLM Models** — Claude, Gemini, local LLMs (Ollama)
+- **CLI or Web UI** — Choose what fits your workflow
+- **Batch Processing** — Transform multiple files programmatically
+- **Custom Entity Types** — Add support for any healthcare entity
+- **Pluggable Validators** — Extend validation rules as needed
+
+---
+
+## 💡 Use Cases
+
+### 1. **EHR System Migration**
+Migrate patient records, encounters, diagnoses from one EHR to another (e.g., Epic → Cerner, NextGen → Medidata)
+
+### 2. **Practice Management Integration**
+Transform billing and patient data to integrate PM systems with accounting software
+
+### 3. **Data Integration Projects**
+Combine data from multiple healthcare systems into a data warehouse
+
+### 4. **Compliance & Audit**
+Generate complete provenance reports showing data transformations for compliance reviews
+
+### 5. **Data Quality Improvement**
+Identify and fix data quality issues during migration with AI-driven analysis
+
+### 6. **Pilot Programs**
+Quickly test transformation rules before full-scale migration
+
+---
+
+## 🏗️ Architecture
+
+### Transformation Pipeline
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│ Raw File (CSV/Excel/XML/JSON)                              │
+└──────────────────────┬──────────────────────────────────────┘
+                       ↓
+        ┌──────────────────────────────┐
+        │ 1. Auto-Detect Format & Type │
+        │    Convert to Normalized JSON│
+        └──────────────┬───────────────┘
+                       ↓
+        ┌──────────────────────────────────────┐
+        │ 2. Load Context                      │
+        │    - Expectations document           │
+        │    - Field mappings                  │
+        │    - Data schemas                    │
+        │    - Example transformations         │
+        └──────────────┬───────────────────────┘
+                       ↓
+        ┌──────────────────────────────────────┐
+        │ 3. AI Code Generation                │
+        │    Claude/Gemini/Local LLM           │
+        │    Generates transform(data) code    │
+        └──────────────┬───────────────────────┘
+                       ↓
+        ┌──────────────────────────────────────┐
+        │ 4. Execute Transformation            │
+        │    Run generated code on all records │
+        └──────────────┬───────────────────────┘
+                       ↓
+        ┌──────────────────────────────────────┐
+        │ 5. Validate Output                   │
+        │    Healthcare-specific rules         │
+        │    (ICD, CPT, dates, emails, etc.)   │
+        └──────────────┬───────────────────────┘
+                       ↓
+           ┌───────────────────────┐
+           │                       │
+        ✅ PASS?              ❌ FAIL?
+        │                       │
+        ↓                       ↓
+    ┌────────────┐      ┌──────────────┐
+    │ Write      │      │ Show AI      │
+    │ Results    │      │ error details│
+    │ + Reports  │      │ Iterate (8x) │
+    └────────────┘      └──────────────┘
+```
+
+### Key Components
+
+| Component | Purpose |
+|-----------|---------|
+| **orchestrator.js** | Main engine coordinating the pipeline |
+| **llm-client.js** | Unified interface to Claude, Gemini, local LLMs |
+| **converters.js** | Auto-detects and converts formats to JSON |
+| **validators.js** | Healthcare-specific validation rules |
+| **provenance-generator.js** | AI-driven data quality analysis |
+| **server.js** | Express.js web server with WebSocket support |
+
+---
+
+## 🤖 Supported AI Models
+
+| Model | Setup | Cost | Speed | Best For |
+|-------|-------|------|-------|----------|
+| **Claude** 👑 | `ANTHROPIC_API_KEY` | ~$0.003/1K tokens | ⚡⚡ Fast | **Recommended:** Most reliable, healthcare-aware, best quality |
+| **Gemini** | `GOOGLE_API_KEY` | Free tier available | ⚡⚡ Fast | Cost-conscious, good alternative |
+| **Local LLM** | `ollama serve mistral` | Free | ⚡ Variable | Privacy-critical, offline operation, no API costs |
+
+See [transformations/ORCHESTRATOR.md](transformations/ORCHESTRATOR.md) for detailed setup.
+
+---
+
+## 🏥 Healthcare Entities Supported
+
+✅ **Patients** — Demographics, identifiers, contacts
+✅ **Encounters** — Visits, appointments, admissions
+✅ **Diagnoses** — ICD codes, problem lists, status
+✅ **Procedures** — CPT codes, treatments
+✅ **Billing** — Charges, line items, adjustments
+✅ **Providers** — Staff, credentials, NPI numbers
+✅ **Medications** — Drug information, dispensing
+✅ **Lab Results** — Tests, values, reference ranges
+
+Add more entity types by extending `validators.js` and updating field mappings.
+
+---
+
+## 📋 Output & Provenance
+
+### Transformation Outputs
+
+For each transformation, generates:
+
+1. **output.json** — Transformed data in target format
+2. **validation_report.json** — Structured validation results
+3. **notes.md** — Human-readable transformation summary
+4. **provenance.json** — Data quality analysis (AI-generated)
+5. **provenance.md** — Provenance report (human-readable)
+
+### Provenance Report Includes
+
+✓ **Data Quality Metrics** (before/after analysis)
+✓ **Transformation Lineage** (field mappings applied)
+✓ **Risk Assessment** (data loss, validation issues)
+✓ **AI Recommendations** (improvement suggestions)
+✓ **Confidence Rating** (overall transformation quality)
+
+Example metrics:
+```json
+{
+  "dataQuality": {
+    "before": { "nullRates": { "phone": 0.05, "email": 0.15 } },
+    "after": { "nullRates": { "phone": 0.02, "email": 0.08 } },
+    "improvement": "High - 60% reduction in null values"
+  },
+  "aiAssessment": {
+    "dataQualityImprovement": "Standardized names, formatted phones, validated emails",
+    "riskFactors": ["Email validation may be strict"],
+    "recommendations": ["Consider relaxing email regex"],
+    "overallConfidence": "High - 99.5% pass rate"
+  }
+}
+```
+
+---
+
+## 📁 Project Structure
+
+```
+healthcare-elt/
+├── transformations/              # AI transformation engine
+│   ├── server.js                # Web server (Express)
+│   ├── orchestrator.js           # Main orchestrator
+│   ├── llm-client.js             # LLM interface
+│   ├── converters.js             # Format conversion
+│   ├── validators.js             # Healthcare validation
+│   ├── provenance-generator.js   # Data quality analysis
+│   ├── config.js                 # Configuration
+│   ├── ORCHESTRATOR.md           # Detailed docs
+│   └── public/                   # Web UI
+│       ├── index.html
+│       ├── css/style.css
+│       └── js/app.js
+│
+├── bronze/                       # Raw input files
+│   └── *.csv, *.xlsx, *.xml
+│
+├── outputs/                      # Transformed outputs
+│   └── {entity_type}/converted_{date}/
+│       ├── output.json
+│       ├── validation_report.json
+│       ├── notes.md
+│       ├── provenance.json
+│       └── provenance.md
+│
+├── expectations.md               # Transformation rules
+├── data_schema.md                # Data structure definitions
+├── compliance.md                 # HIPAA guidelines
+├── field_mappings/               # Field mapping docs
+├── test_cases.md                 # Validation rules
+├── GETTING_STARTED.md            # Quick start guide
+├── .env.example                  # Environment template
+└── package.json                  # Dependencies
+```
+
+---
+
+## 🔐 Security & Compliance
+
+✅ **HIPAA Awareness** — Built-in guidance for PHI handling
+✅ **Audit Trail** — Complete logs of all transformations
+✅ **Data Validation** — Ensures data integrity throughout
+✅ **Privacy Controls** — De-identification guidelines included
+✅ **Encryption Ready** — Supports encryption in transit/at rest
+✅ **Compliance Docs** — See [compliance.md](compliance.md) for details
+
+---
+
+## 📖 Documentation
+
+| Document | Purpose |
+|----------|---------|
+| [README.md](README.md) | This file — overview and quick start |
+| [GETTING_STARTED.md](GETTING_STARTED.md) | Detailed setup and workflow guide |
+| [transformations/ORCHESTRATOR.md](transformations/ORCHESTRATOR.md) | AI orchestrator detailed docs |
+| [expectations.md](expectations.md) | How to define transformation rules |
+| [data_schema.md](data_schema.md) | Input/output structure definitions |
+| [compliance.md](compliance.md) | HIPAA and privacy guidelines |
+| [test_cases.md](test_cases.md) | Validation rules and test scenarios |
+| [field_mappings/](field_mappings/) | System-specific mapping examples |
+
+---
+
+## 🎯 Key Principles
+
+- **🤖 AI + Documentation**: AI generates code from documented expectations, not guesses
+- **🔄 Self-Healing**: Auto-iterates on failures, fixing issues intelligently
+- **📝 Explicit over Implicit**: All transformations documented and traceable
+- **🚫 Lossy is Approved**: Data loss is intentional and documented
+- **🔍 Audit Trail**: Complete logs of every transformation decision
+- **🔐 Compliance First**: HIPAA and privacy non-negotiable
+- **✅ Validation First**: Healthcare-specific validation at every step
+- **🔧 Flexible**: Multiple formats, LLMs, entity types, deployment options
+
+---
+
+## 🚀 Workflows
+
+### Option 1: Web UI (Recommended for Most Users)
 ```bash
-# Transform all files in bronze directory
+npm start
+# → Open http://localhost:3000
+# → Upload file, select options, click "Start"
+# → View results and generate provenance
+```
+
+### Option 2: Command Line (for Automation/Batch)
+```bash
+# Transform all files
 npm run transform
 
 # Transform specific entity type
 npm run transform:patient
 
-# CLI with options
+# CLI with custom options
 node transformations/orchestrator.js --bronze-dir=bronze --model=claude --max-iterations=8
 ```
 
-## The AI-Powered Orchestrator
+### Option 3: Documentation-First (Advanced)
+For complete control, manually define transformations:
+1. Document in `expectations.md`
+2. Map fields in `field_mappings/`
+3. Write code in `transformations/`
+4. Validate with `test_cases.md`
 
-The orchestrator automates the entire transformation pipeline:
+---
 
+## 📊 Sample Transformation
+
+**Input** (patients.csv):
+```csv
+PATIENT_NAME_FIRST,PATIENT_NAME_LAST,DOB,PHONE_NUM
+JOHN,SMITH,19650322,6175554321
+MARY,JOHNSON,19720815,
 ```
-Raw File (CSV/Excel/XML)
-    ↓ [1] Convert to JSON
-JSON Data + Expectations
-    ↓ [2] Load Context (mappings, schema, examples)
-    ↓ [3] Call AI (Claude/Gemini/Local LLM)
-AI Generates Transform Code
-    ↓ [4] Execute Generated Code
-Transformed Data
-    ↓ [5] Validate Output
-    ├─ ✅ Pass? → Write to outputs/
-    └─ ❌ Fail? → Show errors to AI → Iterate (up to 8x)
+
+**AI-Generated Code** (transform function):
+```javascript
+function transform(data) {
+  return data.map(r => ({
+    first_name: r.PATIENT_NAME_FIRST?.toLowerCase().replace(/^\w/, c => c.toUpperCase()) || null,
+    last_name: r.PATIENT_NAME_LAST?.toLowerCase().replace(/^\w/, c => c.toUpperCase()) || null,
+    dob: r.DOB ? `${r.DOB.slice(0,4)}-${r.DOB.slice(4,6)}-${r.DOB.slice(6)}` : null,
+    phone: r.PHONE_NUM ? `(${r.PHONE_NUM.slice(0,3)}) ${r.PHONE_NUM.slice(3,6)}-${r.PHONE_NUM.slice(6)}` : null
+  }));
+}
 ```
 
-### AI-Driven Iteration
-- **Iteration 1**: AI generates code based on expectations
-- **Validation**: Check against healthcare standards
-- **Iteration 2-8**: If failures detected, AI sees specific errors and fixes them
-  - E.g., "Record 5: Invalid email format" → AI adds email validation
-  - E.g., "ICD code not found in code set" → AI applies code mapping table
-- **Success**: Once validation passes, output is written
+**Output** (output.json):
+```json
+[
+  {
+    "first_name": "John",
+    "last_name": "Smith",
+    "dob": "1965-03-22",
+    "phone": "(617) 555-4321"
+  },
+  {
+    "first_name": "Mary",
+    "last_name": "Johnson",
+    "dob": "1972-08-15",
+    "phone": null
+  }
+]
+```
 
-### Supported AI Models
+**Validation Report**:
+```json
+{
+  "recordsProcessed": 2,
+  "validationPassed": true,
+  "issues": [],
+  "recordsValid": 2
+}
+```
 
-| Model | Setup | Cost | Speed | Best For |
-|-------|-------|------|-------|----------|
-| **Claude** (Recommended) | `ANTHROPIC_API_KEY` | ~$0.003/1K tokens | Fast | Most reliable, healthcare-aware |
-| **Gemini** | `GOOGLE_API_KEY` | Free tier available | Fast | Cost-effective alternative |
-| **Local LLM** | `ollama serve mistral` | Free | Variable | Privacy, offline, no API calls |
+**Provenance Report** (AI-generated):
+```
+✅ Data Quality Improvement: Standardized name case, formatted phones, validated dates
+⚠️ Risk Areas: 1 record missing phone number (acceptable)
+✨ Recommendations: Consider phone validation rules for missing values
+🎯 Overall Confidence: High - 100% pass rate
+```
 
-See `transformations/ORCHESTRATOR.md` for detailed usage.
+---
 
-## Traditional Workflow (Documentation-First)
+## 🛠️ Development
 
-If you prefer to define transformations without AI:
+### Requirements
+- Node.js 14+
+- npm 6+
 
-1. **Define Inputs**: Place source system exports in `inputs/`
-2. **Document Expectations**: Update `expectations.md` with rules for this specific conversion
-3. **Create Field Mappings**: Document how source fields map to target fields in `field_mappings/`
-4. **Write Transformation Code**: Manual implementation in `transformations/transform.js`
-5. **Validate Outputs**: Check outputs against `test_cases.md`
-6. **Review Results**: Logs and errors guide refinement
+### Install Dependencies
+```bash
+npm install
+```
 
-## Healthcare Entities Covered
+### Environment Setup
+```bash
+cp .env.example .env
+# Configure: ANTHROPIC_API_KEY, GOOGLE_API_KEY, LOCAL_LLM_URL
+```
 
-- Patients (demographics, identifiers)
-- Encounters (visits, appointments)
-- Diagnoses (ICD codes, problem list)
-- Procedures (CPT codes, treatments)
-- Medications
-- Lab Results
-- Billing/Claims (CPT, ICD mapping, charges)
-- Providers (staff, credentials)
+### Running Tests
+```bash
+npm test
+```
 
-## Key Principles
+### Contributing
+Contributions welcome! Submit issues and pull requests on GitHub.
 
-- **AI + Documentation**: AI generates code from documented expectations, not blind algorithms
-- **Self-Healing**: Orchestrator iterates when validation fails, fixing issues automatically
-- **Explicit over Implicit**: All transformations are documented and traceable
-- **Lossy Transformations Must Be Approved**: If data is dropped, it's intentional and logged
-- **Audit Trail**: Complete logs show every transformation decision and iteration
-- **Compliance First**: HIPAA and data privacy constraints are non-negotiable
-- **Validation First**: Comprehensive validation at each step, healthcare-specific rules
-- **Flexibility**: Supports multiple input formats, LLM providers, and entity types
+---
 
-## Features
+## 📄 License
 
-✅ **AI Code Generation** — Claude/Gemini/Local LLMs generate transformation code
-✅ **Auto-Format Detection** — Handles CSV, Excel, XML, JSON automatically
-✅ **Iterative Refinement** — Up to 8 self-healing iterations on validation failures
-✅ **Healthcare-Specific** — ICD/CPT validation, date format handling, provider matching
-✅ **HIPAA Compliant** — Built-in encryption, audit logs, privacy controls
-✅ **Flexible I/O** — Bronze directory for raw files, standardized JSON outputs
-✅ **Entity Types** — Patients, encounters, diagnoses, billing, providers, medications
-✅ **Multi-Model Support** — Claude, Gemini, local LLMs (Ollama, etc.)
-✅ **Comprehensive Validation** — Pre/post transformation checks, entity-specific rules
-✅ **Detailed Logging** — Full audit trail of transformations and decisions
-✅ **Web UI Dashboard** — Real-time progress, live logs, results visualization
-✅ **Data Provenance** — AI-driven analysis of data quality, lineage, and recommendations
+MIT License — See LICENSE file for details
 
-## Data Provenance
+---
 
-After transformation, the system generates a comprehensive **data provenance report** that includes:
+## 🤝 Support & Resources
 
-- **Data Quality Metrics**: Before/after analysis (null rates, field types, completeness)
-- **Transformation Lineage**: Which source fields became which target fields
-- **Quality Assessment**: What improved, what risks were introduced, confidence level
-- **AI Recommendations**: Suggested improvements based on data quality analysis
-- **Full Audit Trail**: Every transformation decision documented
+- **Documentation**: See [GETTING_STARTED.md](GETTING_STARTED.md)
+- **Detailed Orchestrator Docs**: See [transformations/ORCHESTRATOR.md](transformations/ORCHESTRATOR.md)
+- **Healthcare Guidelines**: See [compliance.md](compliance.md)
+- **Issues & Discussions**: GitHub issues and discussions
+- **Examples**: See `inputs/` and `outputs/` directories for sample transformations
 
-The provenance report is generated by Claude/Gemini/Local LLM analyzing the actual transformation and data to provide insights into:
-- How well data quality improved
-- Any data loss or field modifications
-- Risk factors and recommendations
-- Overall confidence in the transformation
+---
 
-Reports are saved as both JSON (machine-readable) and Markdown (human-readable).
+**Transform healthcare data intelligently. Document expectations. Let AI handle the rest.** 🚀
