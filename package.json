@@ -1,0 +1,48 @@
+{
+  "name": "healthcare-ai-elt",
+  "version": "1.0.0",
+  "description": "AI-powered healthcare data transformation framework with LLM-driven code generation and iterative validation",
+  "main": "transformations/orchestrator.js",
+  "bin": {
+    "healthcare-elt": "transformations/orchestrator.js"
+  },
+  "scripts": {
+    "start": "node transformations/orchestrator.js",
+    "transform": "node transformations/orchestrator.js",
+    "transform:patient": "node transformations/orchestrator.js --entity=patient --bronze-dir=./bronze",
+    "transform:encounter": "node transformations/orchestrator.js --entity=encounter --bronze-dir=./bronze",
+    "transform:diagnosis": "node transformations/orchestrator.js --entity=diagnosis --bronze-dir=./bronze",
+    "transform:billing": "node transformations/orchestrator.js --entity=billing --bronze-dir=./bronze",
+    "validate": "node transformations/validators.js",
+    "test": "echo \"No tests yet\" && exit 0",
+    "setup": "cp .env.example .env && echo 'Created .env - add your API keys'"
+  },
+  "keywords": [
+    "healthcare",
+    "ELT",
+    "data-transformation",
+    "EHR",
+    "HIPAA",
+    "AI",
+    "Claude",
+    "LLM",
+    "code-generation"
+  ],
+  "author": "Healthcare Team",
+  "license": "MIT",
+  "dependencies": {
+    "dotenv": "^16.0.3",
+    "xlsx": "^0.18.5",
+    "xml2js": "^0.6.2"
+  },
+  "devDependencies": {
+    "prettier": "^3.0.0"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/zachdwight/zebco.git"
+  }
+}
