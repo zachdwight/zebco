@@ -1,0 +1,15 @@
+{
+  "encounter_id": "ENC_584729",
+  "mrn": "PM-0012847",
+  "encounter_date": "2025-10-15",
+  "encounter_time": "14:30",
+  "provider_id": "DR_001",
+  "provider_name": "Dr. James Mitchell",
+  "encounter_type": "Office Visit",
+  "department": "Cardiology",
+  "chief_complaint": "Follow-up for hypertension, chest pain evaluation",
+  "visit_notes": "Patient presents for routine cardiology follow-up. Reports mild chest discomfort with exertion, resolves with rest. BP today 138/88 mmHg. EKG performed shows normal sinus rhythm. Will continue current medications. Follow-up in 3 months. Patient counseled on diet and exercise.",
+  "status": "Completed",
+  "billing_status": "Billed",
+  "created_date": "2025-10-15"
+}

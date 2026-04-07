@@ -1,0 +1,15 @@
+{
+  "encounter_id": "ENC_927384",
+  "patient_id": "PT_5847293",
+  "source_encounter_id": "ENC_584729",
+  "encounter_date": "2025-10-15",
+  "encounter_time": "14:30:00",
+  "provider_id": "PROV_DR001",
+  "encounter_type": "Office Visit",
+  "department": "Cardiology",
+  "chief_complaint": "Follow-up for hypertension, chest pain evaluation",
+  "notes_summary": "Patient presents for routine cardiology follow-up. Reports mild chest discomfort with exertion, resolves with rest. BP today 138/88 mmHg. EKG performed shows normal sinus rhythm. Will continue current medications. Follow-up in 3 months.",
+  "status": "Completed",
+  "billing_status": "Billed",
+  "import_date": "2026-04-07"
+}

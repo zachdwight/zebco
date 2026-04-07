@@ -1,0 +1,56 @@
+# Logs and execution records
+transformations/logs/
+*.log
+transform_*.log
+validation_results_*.json
+errors_*.log
+
+# Sensitive data and credentials
+.env
+.env.local
+*.key
+*.pem
+credentials.*
+secrets.*
+
+# Real PHI data (keep only de-identified examples)
+inputs/**/*.csv
+inputs/**/*.xlsx
+inputs/**/*.xls
+!inputs/**/example_*/
+outputs/**/*.csv
+outputs/**/*.xlsx
+outputs/**/*.xls
+!outputs/**/example_*/
+
+# Lookups with production data
+transformations/lookups/**/*.csv
+transformations/lookups/**/*.xlsx
+!transformations/lookups/**/*.md
+!transformations/lookups/**/TEMPLATE*
+
+# Dependencies and build artifacts
+node_modules/
+dist/
+build/
+*.min.js
+*.bundle.*
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# Temporary files
+*.tmp
+*.temp
+*.bak
+*.backup
+
+# OS files
+.DS_Store
+.env.sample

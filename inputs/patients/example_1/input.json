@@ -1,0 +1,19 @@
+{
+  "mrn": "PM-0012847",
+  "patient_id": "PAT_10234",
+  "first_name": "MARGARET",
+  "last_name": "JOHNSON",
+  "dob": "1965-03-22",
+  "gender": "F",
+  "ssn": "123-45-6789",
+  "phone": "6175554321",
+  "email": "m.johnson@email.com",
+  "address_line1": "456 Oak Street",
+  "address_line2": "",
+  "city": "Boston",
+  "state": "MA",
+  "zip": "02115",
+  "active": "Y",
+  "created_date": "2018-05-10",
+  "modified_date": "2025-11-15"
+}

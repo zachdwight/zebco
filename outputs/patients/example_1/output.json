@@ -1,0 +1,18 @@
+{
+  "patient_id": "PT_5847293",
+  "mrn": "PM-0012847",
+  "first_name": "Margaret",
+  "last_name": "Johnson",
+  "dob": "1965-03-22",
+  "gender": "F",
+  "ssn": "123-45-6789",
+  "phone": "(617) 555-4321",
+  "email": "m.johnson@email.com",
+  "address": "456 Oak Street, Boston, MA 02115",
+  "city": "Boston",
+  "state": "MA",
+  "zip": "02115",
+  "active": true,
+  "import_source": "source_system_name",
+  "import_date": "2026-04-07"
+}
