@@ -342,16 +342,330 @@ npm start
 # → View results and generate provenance
 ```
 
-### Option 2: Command Line (for Automation/Batch)
+### Option 2: Command Line (for Automation/Batch/Scripts)
+
+The CLI is perfect for automation, scheduled jobs, and batch processing. Full documentation in [transformations/ORCHESTRATOR.md](transformations/ORCHESTRATOR.md).
+
+#### Quick Commands
+
 ```bash
-# Transform all files
+# Transform all files in bronze directory
 npm run transform
 
 # Transform specific entity type
 npm run transform:patient
+npm run transform:encounter
+npm run transform:diagnosis
+npm run transform:billing
 
-# CLI with custom options
-node transformations/orchestrator.js --bronze-dir=bronze --model=claude --max-iterations=8
+# See all available commands
+npm run
+```
+
+#### Full CLI Options
+
+```bash
+node transformations/orchestrator.js [OPTIONS]
+```
+
+**Options:**
+
+| Option | Values | Description | Default |
+|--------|--------|-------------|---------|
+| `--bronze-file` | path | Transform single file | — |
+| `--bronze-dir` | path | Transform all files in directory | `./bronze` |
+| `--entity` | type or `all` | Entity type (patient, encounter, etc.) or auto-detect all | `all` |
+| `--model` | claude, gemini, local | Which LLM to use | `claude` |
+| `--max-iterations` | 1-10 | Max retry attempts on validation failure | `8` |
+| `--output-dir` | path | Where to write results | `./outputs` |
+| `--log-dir` | path | Where to write logs | `./transformations/logs` |
+
+#### Examples
+
+**Transform single file with Claude:**
+```bash
+node transformations/orchestrator.js --bronze-file=bronze/patients.csv --entity=patient --model=claude
+```
+
+**Transform all files with Gemini (cheaper):**
+```bash
+node transformations/orchestrator.js --bronze-dir=bronze --model=gemini
+```
+
+**Transform with local LLM (offline, free):**
+```bash
+# First: Start local LLM
+ollama serve mistral
+
+# In another terminal:
+node transformations/orchestrator.js --bronze-dir=bronze --model=local
+```
+
+**Batch transform specific entity type only:**
+```bash
+node transformations/orchestrator.js --bronze-dir=bronze --entity=patient --max-iterations=5
+```
+
+**Custom output directory:**
+```bash
+node transformations/orchestrator.js --bronze-dir=bronze --output-dir=/path/to/results
+```
+
+**Aggressive mode (fewer retries, faster):**
+```bash
+node transformations/orchestrator.js --bronze-dir=bronze --max-iterations=2
+```
+
+#### Batch Processing Scripts
+
+**Transform all entity types sequentially:**
+```bash
+#!/bin/bash
+for entity in patient encounter diagnosis billing provider; do
+  echo "Transforming $entity..."
+  node transformations/orchestrator.js --bronze-dir=bronze --entity=$entity
+  if [ $? -ne 0 ]; then
+    echo "Failed to transform $entity"
+    exit 1
+  fi
+done
+echo "All transformations complete!"
+```
+
+**Parallel processing (faster for large datasets):**
+```bash
+#!/bin/bash
+# Transform multiple entity types in parallel
+node transformations/orchestrator.js --bronze-dir=bronze --entity=patient &
+node transformations/orchestrator.js --bronze-dir=bronze --entity=encounter &
+node transformations/orchestrator.js --bronze-dir=bronze --entity=diagnosis &
+node transformations/orchestrator.js --bronze-dir=bronze --entity=billing &
+
+wait
+echo "All transformations complete!"
+```
+
+**Scheduled daily transformation (cron):**
+```bash
+# Add to crontab (crontab -e)
+0 2 * * * cd /path/to/healthcare-elt && node transformations/orchestrator.js --bronze-dir=bronze --model=gemini >> logs/daily.log 2>&1
+```
+
+#### Programmatic Usage (Node.js)
+
+Use the CLI-free, directly in your code:
+
+```javascript
+const { Orchestrator } = require('./transformations/orchestrator');
+
+async function transformData() {
+  const orchestrator = new Orchestrator({
+    maxIterations: 8,
+    model: 'claude',
+    bronzeDir: './bronze',
+    outputDir: './outputs',
+    verbose: true
+  });
+
+  try {
+    const result = await orchestrator.transformFile(
+      './bronze/patients.csv',
+      'patient'
+    );
+
+    if (result.success) {
+      console.log(`✅ Transformed ${result.recordsProcessed} records`);
+      console.log(`Validation: ${result.validationPassed ? 'PASSED' : 'FAILED'}`);
+      console.log(`Output: ${result.outputPath}`);
+    } else {
+      console.error(`❌ Error: ${result.error}`);
+    }
+  } catch (error) {
+    console.error('Fatal error:', error);
+  }
+}
+
+transformData();
+```
+
+#### Output Files
+
+Each transformation creates:
+
+```
+outputs/
+└── {entity_type}/
+    └── converted_{date}/
+        ├── output.json              # Transformed data
+        ├── validation_report.json   # Validation results
+        ├── notes.md                 # Human-readable summary
+        ├── provenance.json          # Data quality analysis
+        └── provenance.md            # Provenance report
+```
+
+#### Exit Codes
+
+CLI returns meaningful exit codes for scripting:
+
+| Code | Meaning |
+|------|---------|
+| `0` | Success |
+| `1` | Transformation failed |
+| `2` | Invalid arguments |
+| `3` | File not found |
+| `4` | API error |
+
+Use in scripts:
+```bash
+node transformations/orchestrator.js --bronze-file=patients.csv
+if [ $? -eq 0 ]; then
+  echo "Success!"
+else
+  echo "Transformation failed with code $?"
+fi
+```
+
+#### Real-World Scenarios
+
+**Scenario 1: Daily EHR Export Processing**
+```bash
+#!/bin/bash
+# Run nightly at 2 AM via cron
+DATE=$(date +%Y%m%d)
+SOURCE_DIR="/mnt/ehr-export/$DATE"
+OUTPUT_DIR="/mnt/ehr-transformed/$DATE"
+
+if [ ! -d "$SOURCE_DIR" ]; then
+  echo "Source directory not found: $SOURCE_DIR"
+  exit 1
+fi
+
+node /opt/healthcare-elt/transformations/orchestrator.js \
+  --bronze-dir="$SOURCE_DIR" \
+  --output-dir="$OUTPUT_DIR" \
+  --model=claude \
+  --max-iterations=8
+
+if [ $? -eq 0 ]; then
+  # Archive results
+  tar -czf "$OUTPUT_DIR/archive.tar.gz" "$OUTPUT_DIR/*.json"
+  # Notify on success
+  mail -s "EHR Transform Success: $DATE" admin@hospital.org < /dev/null
+else
+  # Alert on failure
+  mail -s "EHR Transform FAILED: $DATE" admin@hospital.org < /dev/null
+  exit 1
+fi
+```
+
+**Scenario 2: CI/CD Integration (GitHub Actions)**
+```yaml
+name: Healthcare Data Transform
+on:
+  schedule:
+    - cron: '0 2 * * *'  # Daily at 2 AM
+
+jobs:
+  transform:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '16'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Download source data
+        run: aws s3 sync s3://ehr-exports/latest ./bronze/
+
+      - name: Transform data
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: npm run transform
+
+      - name: Upload results
+        run: aws s3 sync ./outputs s3://ehr-transformed/
+
+      - name: Notify Slack
+        run: curl -X POST ${{ secrets.SLACK_WEBHOOK }} -d '{"text":"EHR transformation complete"}'
+```
+
+**Scenario 3: Monitor Multiple Transformations**
+```bash
+#!/bin/bash
+# Process multiple file types with progress monitoring
+TYPES=("patient" "encounter" "diagnosis" "billing")
+FAILED=0
+
+for type in "${TYPES[@]}"; do
+  echo "Processing $type..."
+  node transformations/orchestrator.js --bronze-dir=bronze --entity=$type
+
+  if [ $? -ne 0 ]; then
+    echo "❌ FAILED: $type"
+    ((FAILED++))
+  else
+    echo "✅ SUCCESS: $type"
+  fi
+done
+
+echo ""
+echo "========== SUMMARY =========="
+echo "Total types: ${#TYPES[@]}"
+echo "Failed: $FAILED"
+echo "Success: $((${#TYPES[@]} - FAILED))"
+
+exit $FAILED
+```
+
+#### Troubleshooting CLI
+
+**Issue: "Command not found: node"**
+```bash
+# Make sure Node.js is installed
+node --version
+
+# If not installed, install from nodejs.org or:
+brew install node  # macOS
+apt-get install nodejs  # Ubuntu/Debian
+```
+
+**Issue: "ANTHROPIC_API_KEY not set"**
+```bash
+# Set environment variable
+export ANTHROPIC_API_KEY=sk-...
+
+# Or create .env file
+echo "ANTHROPIC_API_KEY=sk-..." > .env
+
+# Verify
+echo $ANTHROPIC_API_KEY
+```
+
+**Issue: "Bronze directory not found"**
+```bash
+# Create bronze directory
+mkdir -p bronze
+
+# Add files
+cp /path/to/data.csv bronze/
+
+# Verify
+ls -la bronze/
+```
+
+**Issue: "Transformation failed after 8 iterations"**
+```bash
+# Check logs for details
+cat transformations/logs/transform_*.log
+
+# Try with more iterations
+node transformations/orchestrator.js --bronze-file=data.csv --max-iterations=10
+
+# Or try different model
+node transformations/orchestrator.js --bronze-file=data.csv --model=gemini
 ```
 
 ### Option 3: Documentation-First (Advanced)
