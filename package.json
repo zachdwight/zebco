@@ -7,7 +7,8 @@
     "healthcare-elt": "transformations/orchestrator.js"
   },
   "scripts": {
-    "start": "node transformations/orchestrator.js",
+    "start": "node transformations/server.js",
+    "server": "node transformations/server.js",
     "transform": "node transformations/orchestrator.js",
     "transform:patient": "node transformations/orchestrator.js --entity=patient --bronze-dir=./bronze",
     "transform:encounter": "node transformations/orchestrator.js --entity=encounter --bronze-dir=./bronze",
@@ -31,7 +32,13 @@
   "author": "Healthcare Team",
   "license": "MIT",
   "dependencies": {
+    "body-parser": "^1.20.0",
+    "cors": "^2.8.5",
     "dotenv": "^16.0.3",
+    "express": "^4.18.0",
+    "multer": "^1.4.5",
+    "uuid": "^9.0.0",
+    "ws": "^8.13.0",
     "xlsx": "^0.18.5",
     "xml2js": "^0.6.2"
   },

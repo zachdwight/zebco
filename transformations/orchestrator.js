@@ -428,6 +428,41 @@ ${validationResult.passed ? "Ready for import into target system." : "Fix valida
   }
 
   /**
+   * Generate provenance report for transformation
+   */
+  async generateProvenance(inputData, outputData, entityType, validationResult, outputPath) {
+    try {
+      const { ProvenanceGenerator } = require("./provenance-generator");
+
+      this.log(`Generating provenance report for ${entityType}...`);
+
+      const generator = new ProvenanceGenerator({
+        model: this.options.model,
+      });
+
+      const provenance = await generator.generateProvenance({
+        inputData,
+        outputData,
+        sourceFile: "migration",
+        entityType,
+        validationResult,
+        model: this.options.model,
+        iterationsUsed: 1,
+        timeMs: 0,
+      });
+
+      await generator.writeProvenanceFiles(provenance, outputPath);
+
+      this.log(`✅ Provenance report generated`);
+
+      return provenance;
+    } catch (error) {
+      this.log(`⚠️  Provenance generation failed: ${error.message}`, "warn");
+      return null;
+    }
+  }
+
+  /**
    * Discover and process all bronze files in a directory
    */
   async processBronzeDirectory(entityType = "all") {
