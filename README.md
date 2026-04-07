@@ -1,6 +1,6 @@
-# Healthcare ELT Conversion Framework
+# Zebco
 
-**Transform healthcare data between EHR systems intelligently.** Uses AI to generate transformation code from documentation, validates against healthcare standards, and generates data lineage reports.
+**AI-powered healthcare data transformation platform.** Transform healthcare data between EHR systems intelligently with AI-generated code, intelligent validation, and data provenance analysis.
 
 ---
 
@@ -24,9 +24,9 @@ See [compliance.md](compliance.md) for detailed requirements and responsibilitie
 
 ---
 
-## 🎯 What It Does
+## 🎯 What Zebco Does
 
-Healthcare ELT is an **AI-powered data transformation platform** that automates the complex process of migrating healthcare data between different Electronic Health Record (EHR) systems, practice management systems, and accounting platforms.
+Zebco is an **AI-powered data transformation platform** that automates the complex process of migrating healthcare data between different Electronic Health Record (EHR) systems, practice management systems, and accounting platforms.
 
 Instead of manually writing transformation code, you:
 1. **Document** your expectations (field mappings, rules, constraints)
